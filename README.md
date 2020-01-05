@@ -10,7 +10,13 @@ SYS_ADMIN privilege.  The generated file is written to the mounted volume.
 Example run to convert a markdown and supporting files into a PDF via docker run:
 
 ```
-docker run -ti --rm -u `id -u $USER` --cap-add=SYS_ADMIN -v $PWD:/u pandoc pandoc --pdf-engine=xelatex --filter=pandoc_jnpr_filter.py --template=Jnpr_a4.latex README.md -o Telco_Cloud_Monitoring_Blueprint.pdf
-ls -l Telco_Cloud_Monitoring_Blueprint.pdf
-rm -rf mermaid-images
+$ docker run -ti --rm -u `id -u $USER` --cap-add=SYS_ADMIN -v $PWD:/u pandoc \
+  pandoc --pdf-engine=xelatex \
+  --filter=pandoc_jnpr_filter.py \
+  --template=Jnpr_a4.latex README.md \
+  -o Telco_Cloud_Monitoring_Blueprint.pdf
+
+$ ls -l Telco_Cloud_Monitoring_Blueprint.pdf
+$ rm -rf mermaid-images
 ```
+

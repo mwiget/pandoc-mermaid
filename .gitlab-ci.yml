@@ -8,8 +8,8 @@ stages:
   - release
 
 variables:
-  STREAMER_IMAGE: ${CI_REGISTRY_IMAGE}
-  STREAMER_BUILD_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+  PANDOC_IMAGE: ${CI_REGISTRY_IMAGE}
+  PANDOC_BUILD_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
@@ -24,17 +24,17 @@ before_script:
 build_image:
   stage: build
   script:
-    - docker build -t ${STREAMER_BUILD_IMAGE} .
-    - docker push ${STREAMER_BUILD_IMAGE}
+    - docker build -t ${PANDOC_BUILD_IMAGE} .
+    - docker push ${PANDOC_BUILD_IMAGE}
   tags:
     - docker
 
 publish_latest:
   stage: publish
   script:
-    - docker pull ${STREAMER_BUILD_IMAGE}
-    - push_tag="${STREAMER_IMAGE}:latest"
-    - docker tag ${STREAMER_BUILD_IMAGE} ${push_tag}
+    - docker pull ${PANDOC_BUILD_IMAGE}
+    - push_tag="${PANDOC_IMAGE}:latest"
+    - docker tag ${PANDOC_BUILD_IMAGE} ${push_tag}
     - docker push ${push_tag}
   only:
     - master
@@ -44,9 +44,9 @@ publish_latest:
 release_image:
   stage: release
   script:
-    - docker pull ${STREAMER_BUILD_IMAGE}
-    - push_tag="${STREAMER_IMAGE}:${CI_COMMIT_TAG#v}"
-    - docker tag ${STREAMER_BUILD_IMAGE} ${push_tag}
+    - docker pull ${PANDOC_BUILD_IMAGE}
+    - push_tag="${PANDOC_IMAGE}:${CI_COMMIT_TAG#v}"
+    - docker tag ${PANDOC_BUILD_IMAGE} ${push_tag}
     - docker push ${push_tag}
   only:
     - tags
